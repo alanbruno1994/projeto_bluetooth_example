@@ -1,16 +1,17 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import {NativeModules, StyleSheet, Text, View} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 
 const {BluetoohModule} = NativeModules;
 
-const StatusConnect = () => {
-  const [isAlive, setIsAlive] = useState(false);
-
+const StatusConnect: React.FC<{isAlive: boolean; setIsAlive: any}> = ({
+  isAlive,
+  setIsAlive,
+}) => {
   useEffect(() => {
     setInterval(async () => {
       const state = await BluetoohModule.getStatusBluetooth();
-      if (state !== isAlive) setIsAlive(state);
+      setIsAlive(state);
     }, 500);
   }, []);
 

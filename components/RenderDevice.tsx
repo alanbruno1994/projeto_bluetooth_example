@@ -9,9 +9,9 @@ export type Contents = {
 const RenderDevice: React.FC<{contents: Contents[]}> = ({contents}) => {
   return (
     <View>
-      {contents.map(value => {
+      {contents.map((value, index) => {
         return value.addressMAC ? (
-          <View style={style.container}>
+          <View style={style.container} key={index}>
             <Text style={style.text}>Name: {value.name}</Text>
             <Text style={style.text}>Address MAC: {value.addressMAC}</Text>
           </View>

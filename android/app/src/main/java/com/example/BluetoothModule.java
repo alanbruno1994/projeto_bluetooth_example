@@ -44,19 +44,16 @@ public class BluetoothModule extends ReactContextBaseJavaModule {
     @ReactMethod()
     public void enableBluetooth(Promise promise) {
         if (ActivityCompat.checkSelfPermission(myContext, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
-            return;
+          //  return;
         }
-        if (!bluetoothAdapter.isEnabled()) {
-            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            startActivityForResult(enableBtIntent, 0);
-        }
-        promise.resolve(null);
+        this.bluetoothAdapter.enable();
+        promise.resolve("Ativou");
     }
 
     @ReactMethod()
     public void disableBluetooth(Promise promise) {
         if (ActivityCompat.checkSelfPermission(myContext, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
-            return;
+           // return;
         }
         this.bluetoothAdapter.disable();
         promise.resolve(null);

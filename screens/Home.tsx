@@ -8,6 +8,7 @@ const {BluetoohModule} = NativeModules;
 
 const Home = () => {
   const [contents, setContents] = useState<Contents[]>([]);
+  const [isAlive, setIsAlive] = useState(false);
 
   const onList = async () => {
     const value: string[] = String(await BluetoohModule.list()).split('_!!_');
@@ -21,13 +22,26 @@ const Home = () => {
       }),
     );
   };
+  const onEnable = async () => {
+    await BluetoohModule.enableBluetooth();
+    console.log('1');
+  };
 
-  console.log(contents);
+  const onDisable = async () => {
+    await BluetoohModule.disableBluetooth();
+    console.log('2');
+  };
+
+  console.log(isAlive);
   return (
     <View>
-      <StatusConnect />
+      <StatusConnect isAlive={isAlive} setIsAlive={setIsAlive} />
       <Button title="List Paired" action={onList} />
       <RenderDevice contents={contents} />
+      <Button
+        title={isAlive === false ? 'Enable Bluetooth' : 'Disable Bluetooth'}
+        action={isAlive ? onDisable : onEnable}
+      />
     </View>
   );
 };
