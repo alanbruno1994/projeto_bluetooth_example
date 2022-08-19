@@ -23,12 +23,12 @@ import com.facebook.react.bridge.ReactMethod;
 import java.util.ArrayList;
 import java.util.Set;
 
-public class CalendarModule extends ReactContextBaseJavaModule {
+public class BluetoothModule extends ReactContextBaseJavaModule {
     private Context myContext;
     private BluetoothAdapter bluetoothAdapter;
     private Set<BluetoothDevice> pairedDevices;
 
-    CalendarModule(ReactApplicationContext context) {
+    BluetoothModule(ReactApplicationContext context) {
         super(context);
         this.myContext = context;
         this.bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -38,7 +38,7 @@ public class CalendarModule extends ReactContextBaseJavaModule {
     @NonNull
     @Override
     public String getName() {
-        return "CalendarModule";
+        return "BluetoohModule";
     }
 
     @ReactMethod()
@@ -46,7 +46,10 @@ public class CalendarModule extends ReactContextBaseJavaModule {
         if (ActivityCompat.checkSelfPermission(myContext, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
-        this.bluetoothAdapter.enable();
+        if (!bluetoothAdapter.isEnabled()) {
+            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(enableBtIntent, 0);
+        }
         promise.resolve(null);
     }
 
@@ -61,7 +64,7 @@ public class CalendarModule extends ReactContextBaseJavaModule {
 
     @ReactMethod()
     public void getStatusBluetooth(Promise promise) {
-        promise.resolve(this.bluetoothAdapter.isEnabled() ? "On" : "Off");
+        promise.resolve(this.bluetoothAdapter.isEnabled());
     }
 
     @ReactMethod()
@@ -73,11 +76,11 @@ public class CalendarModule extends ReactContextBaseJavaModule {
         }
 
         pairedDevices = this.bluetoothAdapter.getBondedDevices();
-        ArrayList<String> list = new ArrayList<String>();
+        String content="";
         for (BluetoothDevice bt : pairedDevices) {
-            list.add(bt.getName());
+           content=content+bt.getName()+"%%%"+bt.getAddress()+"_!!_";
         }
-        promise.resolve(list.toString());
+        promise.resolve(content);
     }
 
 }

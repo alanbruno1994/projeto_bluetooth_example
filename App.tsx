@@ -9,40 +9,30 @@
  */
 
 import React from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  useColorScheme,
-  View,
-} from 'react-native';
-
-import {Colors, Header} from 'react-native/Libraries/NewAppScreen';
-import ListButton from './components/ListButton';
+import {SafeAreaView, ScrollView, StatusBar, StyleSheet} from 'react-native';
+import Header from './components/Header';
+import Home from './screens/Home';
 
 const App = () => {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <ListButton />
-        </View>
+    <SafeAreaView style={globalStyle.containter}>
+      <StatusBar hidden={true} />
+      <Header />
+      <ScrollView>
+        <Home />
       </ScrollView>
     </SafeAreaView>
   );
 };
+
+const globalStyle = StyleSheet.create({
+  backgroundStyle: {
+    backgroundColor: 'red',
+  },
+  containter: {
+    flex: 1,
+    backgroundColor: '#0f0f0fff',
+  },
+});
 
 export default App;
